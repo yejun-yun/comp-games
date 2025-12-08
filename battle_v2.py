@@ -241,3 +241,4 @@ def step(state: BattleState, action_p1: ActionType, action_p2: ActionType) -> Ba
     
     return next_state
 
+
