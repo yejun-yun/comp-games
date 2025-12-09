@@ -78,7 +78,7 @@ class HumanAgent(Agent):
         for act in actions:
             if act == ActionType.USE_MOVE_1:
                 move = active_mon.spec.moves[0]
-                print(f"  {idx}. {move.name} (Pwr:{move.power} Acc:{move.accuracy}% Pri:{move.priority:+d}" +
+                print(f"  {idx}. {move.name} (Pwr:{move.base_power} Acc:{move.accuracy}% Pri:{move.priority:+d}" +
                       (f" Recoil:{move.recoil_percent}%)" if move.recoil_percent > 0 else ")"))
                 opts[idx] = act
                 idx += 1
