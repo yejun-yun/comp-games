@@ -1,12 +1,3 @@
-"""
-Mini Pokemon Battle Simulator V2
-
-Clean version with:
-- Accuracy, priority, recoil mechanics
-- General MCTS (no opponent modeling)
-- Strategic depth
-"""
-
 import sys
 import random
 from typing import List, Tuple
@@ -17,7 +8,6 @@ from battle_v2 import (
 from dex_v2 import DEX_V2
 from mcts_v2 import MCTSAgent
 
-# --- Agents ---
 
 class Agent:
     def choose_action(self, state: BattleState, player_id: int) -> ActionType:
@@ -29,7 +19,6 @@ class RandomAgent(Agent):
         return random.choice(actions)
 
 class GreedyAgent(Agent):
-    """Greedy agent that maximizes expected damage."""
     def choose_action(self, state: BattleState, player_id: int) -> ActionType:
         legal = legal_actions_for_player(state, player_id)
         attacks = [a for a in legal if a in (ActionType.USE_MOVE_1, ActionType.USE_MOVE_2)]
@@ -51,7 +40,6 @@ class GreedyAgent(Agent):
             move = my_active.spec.moves[move_idx]
             base_dmg = calculate_damage(move, my_active, opp_active)
             
-            # Expected value = damage * accuracy - recoil penalty
             expected = base_dmg * (move.accuracy / 100)
             if move.recoil_percent > 0:
                 expected -= base_dmg * (move.recoil_percent / 100) * 0.5
@@ -74,7 +62,6 @@ class HumanAgent(Agent):
         opts = {}
         idx = 1
         
-        # Show attacks with details
         for act in actions:
             if act == ActionType.USE_MOVE_1:
                 move = active_mon.spec.moves[0]
@@ -89,7 +76,6 @@ class HumanAgent(Agent):
                 opts[idx] = act
                 idx += 1
         
-        # Show switches
         for act in actions:
             if act in (ActionType.SWITCH_TO_0, ActionType.SWITCH_TO_1, ActionType.SWITCH_TO_2):
                 switch_idx = 0 if act == ActionType.SWITCH_TO_0 else (1 if act == ActionType.SWITCH_TO_1 else 2)
@@ -107,10 +93,7 @@ class HumanAgent(Agent):
             except ValueError:
                 print("Enter a number.")
 
-# --- Helper Functions ---
-
 def create_teams() -> Tuple[List[PokemonInstance], List[PokemonInstance]]:
-    """Create balanced teams from DEX_V2."""
     # Team 1: Flameling, Leaflet, Stonecub
     t1 = [PokemonInstance.from_spec(DEX_V2[0]),
           PokemonInstance.from_spec(DEX_V2[2]),
@@ -135,7 +118,7 @@ def print_battle_state(state: BattleState):
         print(f"  Bench: {', '.join(bench)}")
 
 def main():
-    print("Mini Pokemon Battle V2 (with Accuracy/Priority/Recoil)")
+    print("Pokemon Battle V2 (with Accuracy/Priority/Recoil)")
     print("="*60)
     
     t1, t2 = create_teams()
