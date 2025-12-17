@@ -209,12 +209,14 @@ class MCTSAgent:
         return result
     
     def _rollout(self, state: BattleState) -> float:
-        """Rollout with greedy play for both players."""
+        """Rollout with random play for both players (unbiased)."""
         current = state.clone()
         
         while not current.terminal:
-            a1 = greedy_action(current, 1)
-            a2 = greedy_action(current, 2)
+            legal_p1 = legal_actions_for_player(current, 1)
+            legal_p2 = legal_actions_for_player(current, 2)
+            a1 = random.choice(legal_p1)
+            a2 = random.choice(legal_p2)
             current = step(current, a1, a2)
         
         if current.winner == self.player_id:
