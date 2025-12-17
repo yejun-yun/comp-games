@@ -1,0 +1,6 @@
+# core dependencies
+# python 3.8+ standard library only
+
+# william - value network
+# numpy>=1.20.0
+# tqdm>=4.60.0
