@@ -1,9 +1,5 @@
-import sys
-import os
 import time
 import random
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from battle_v2 import BattleState, PlayerState, PokemonInstance, step
 from dex_v2 import DEX_V2

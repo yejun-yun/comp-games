@@ -1,11 +1,7 @@
 import math
 import random
-import sys
-import os
 from typing import Dict, Tuple, Optional, List, Set
 from collections import defaultdict
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from battle_v2 import BattleState, ActionType, step, legal_actions_for_player, calculate_damage
 

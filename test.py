@@ -6,18 +6,13 @@ Yejun Yun and William Zhong
 Tests MCTS enhancements (RAVE and Value Network) against baselines
 """
 
-import sys
 import time
-import os
 from battle_v2 import BattleState, PlayerState, PokemonInstance, step
 from dex_v2 import DEX_V2
 from mcts_v2 import MCTSAgent
 from main_v2 import GreedyAgent, RandomAgent
-
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'yejun-rave'))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'william-valuenetwork'))
-
 from mcts_rave import MCTSRAVEAgent
+
 try:
     from mcts_value_net import create_mcts_with_value_net
     HAS_VALUE_NET = True
@@ -158,7 +153,7 @@ def main():
     if HAS_VALUE_NET:
         try:
             mcts_valuenet = create_mcts_with_value_net(
-                network_path="william-valuenetwork/value_network_v1.pkl",
+                network_path="value_network_v1.pkl",
                 simulations=simulations,
                 player_id=1
             )
