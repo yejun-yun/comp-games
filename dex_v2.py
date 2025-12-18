@@ -1,13 +1,6 @@
-"""
-Improved Pokemon Dex with Accuracy, Priority, and Recoil
-
-Each Pokemon now has genuine strategic choices between moves!
-"""
-
 from battle_v2 import PokemonSpec, MoveSpec
 
 DEX_V2 = [
-    # Flameling - Balanced attacker with choice: reliability vs power
     PokemonSpec(
         name="Flameling",
         type="Fire",
@@ -21,7 +14,6 @@ DEX_V2 = [
         ],
     ),
     
-    # Aquaff - Balanced with choice: reliable vs disruptive
     PokemonSpec(
         name="Aquaff",
         type="Water",
@@ -35,7 +27,6 @@ DEX_V2 = [
         ],
     ),
     
-    # Leaflet - Setup vs immediate damage
     PokemonSpec(
         name="Leaflet",
         type="Grass",
@@ -49,7 +40,6 @@ DEX_V2 = [
         ],
     ),
     
-    # Bulkwall - Tank with choice: power vs coverage
     PokemonSpec(
         name="Bulkwall",
         type="Normal",
@@ -63,7 +53,6 @@ DEX_V2 = [
         ],
     ),
     
-    # Sparkit - Glass cannon with recoil vs priority
     PokemonSpec(
         name="Sparkit",
         type="Fire",
@@ -77,7 +66,6 @@ DEX_V2 = [
         ],
     ),
     
-    # Torrento - Bulky water with mixed options
     PokemonSpec(
         name="Torrento",
         type="Water",
@@ -91,7 +79,6 @@ DEX_V2 = [
         ],
     ),
     
-    # Sprouty - Fast grass with choice
     PokemonSpec(
         name="Sprouty",
         type="Grass",
@@ -105,7 +92,6 @@ DEX_V2 = [
         ],
     ),
     
-    # Stonecub - Tank with choice between power and priority
     PokemonSpec(
         name="Stonecub",
         type="Normal",
