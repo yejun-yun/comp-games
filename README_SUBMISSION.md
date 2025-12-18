@@ -55,8 +55,9 @@ MCTS with lookahead should outperform myopic greedy play, and performance should
 - **`Makefile`** - Build script with targets
 - **`requirements.txt`** - Dependencies (none required for core!)
 
-### Optional Enhancement:
+### Optional Enhancements:
 - **`william-valuenetwork/`** - AlphaGo-style value network (requires numpy)
+- **`yejun-rave/`** - RAVE (Rapid Action Value Estimation) enhancement for MCTS
 
 ---
 
@@ -169,6 +170,28 @@ python3 benchmark_value_net.py  # Compare to random MCTS
 - **Speedup**: 8-10× faster simulations
 
 This demonstrates modern AI techniques (AlphaGo/AlphaZero approach).
+
+---
+
+## Optional: RAVE Enhancement
+
+An MCTS enhancement using Rapid Action Value Estimation (RAVE) is available in `yejun-rave/`.
+
+### What it does:
+RAVE enhances MCTS by sharing action statistics across the search tree using the All-Moves-As-First (AMAF) heuristic. If an action leads to wins later in a simulation, it's likely good earlier too. This helps MCTS converge faster with fewer simulations.
+
+### To use:
+```bash
+cd yejun-rave
+python3 benchmark_rave.py  # Compare RAVE vs standard MCTS (~10-15 min)
+```
+
+### Expected enhancement:
+- **Standard MCTS**: 40-50% vs Greedy
+- **RAVE MCTS**: 50-60% vs Greedy
+- **Faster convergence**: Better performance at lower simulation budgets
+
+This demonstrates RAVE's effectiveness in simultaneous-move games.
 
 ---
 

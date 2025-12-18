@@ -16,7 +16,7 @@ def print_header():
     """Print project description."""
     print("=" * 70)
     print("CPSC 474 FINAL PROJECT: Pokemon Battle with MCTS")
-    print("Student: Yejun Yun (---) and William Zhong (Value Network)")
+    print("Student: Yejun Yun (RAVE) and William Zhong (Value Network)")
     print("=" * 70)
     print()
     
@@ -41,7 +41,7 @@ def print_header():
     
     print("Research Question:")
     print("-" * 70)
-    print("How does Monte Carlo Tree Search (MCTS) enhanced with a value network and --- perform")
+    print("How does Monte Carlo Tree Search (MCTS) enhanced with a value network and RAVE perform")
     print("compared to a greedy baseline across different simulation budgets?")
     print()
 
@@ -251,7 +251,7 @@ def main():
     print()
     
     print("=" * 70)
-    print("OPTIONAL: Value Network Enhancement")
+    print("OPTIONAL: Value Network Enhancement (William)")
     print("=" * 70)
     print("\nAn advanced AlphaGo-style enhancement is available in:")
     print("  william-valuenetwork/")
@@ -265,6 +265,22 @@ def main():
     print("  python3 benchmark_value_net.py  # Compare performance")
     print()
     print("Expected enhancement: 70-80% win rate vs Greedy (vs 40-50% with random)")
+    print()
+    
+    print("=" * 70)
+    print("OPTIONAL: RAVE Enhancement (Yejun)")
+    print("=" * 70)
+    print("\nA RAVE (Rapid Action Value Estimation) enhancement is available in:")
+    print("  yejun-rave/")
+    print()
+    print("RAVE shares action statistics across the tree using the AMAF heuristic.")
+    print("If an action leads to wins later, it's likely good earlier too.")
+    print()
+    print("To test:")
+    print("  cd yejun-rave")
+    print("  python3 benchmark_rave.py  # Compare RAVE vs standard MCTS (~10-15 min)")
+    print()
+    print("Expected enhancement: Faster convergence, 50-60% win rate vs Greedy")
     print()
     
     print("=" * 70)
