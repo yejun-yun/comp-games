@@ -59,7 +59,7 @@ python3 benchmark_v2.py
 **Honest approach** - does NOT assume opponent behavior:
 
 - Explores all (my_action, opponent_action) pairs
-- ~25 branches per node (5 my actions × 5 opponent actions)
+- ~16 branches per node (4 my actions × 4 opponent actions)
 - Uses greedy rollouts for value estimation
 - Win rate determined by pure search depth
 
