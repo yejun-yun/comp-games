@@ -129,7 +129,7 @@ def main():
     results = {}
     
     # Test 1: Greedy vs Random (sanity check)
-    print("[1/4] BASELINE: Greedy vs Random")
+    print("[1/4] Baseline: Greedy vs Random")
     print("-" * 80)
     random_agent = RandomAgent()
     baseline_result = benchmark(greedy, random_agent, "Greedy", "Random", num_games=num_games)
