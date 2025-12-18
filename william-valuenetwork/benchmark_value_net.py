@@ -1,15 +1,5 @@
-"""
-Benchmark: MCTS with Value Network vs Baseline
-
-Compare performance of:
-1. MCTS with random rollouts
-2. MCTS with value network
-3. Greedy baseline
-"""
-
 import sys
 import os
-# Add parent directory to path to import game modules
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import time
@@ -24,7 +14,6 @@ from main_v2 import GreedyAgent
 
 
 def create_teams():
-    """Create standard teams."""
     team1 = [PokemonInstance.from_spec(DEX_V2[0]),
              PokemonInstance.from_spec(DEX_V2[2]),
              PokemonInstance.from_spec(DEX_V2[7])]
@@ -37,7 +26,6 @@ def create_teams():
 
 
 def play_game(agent1, agent2, verbose=False):
-    """Play one game between two agents."""
     team1, team2 = create_teams()
     state = BattleState(
         player1=PlayerState(team=team1, active_index=0),
@@ -56,7 +44,6 @@ def play_game(agent1, agent2, verbose=False):
 
 
 def benchmark_matchup(agent1, agent2, name1: str, name2: str, num_games: int = 50):
-    """Benchmark two agents against each other."""
     print(f"\n{'='*60}")
     print(f"{name1} vs {name2} ({num_games} games)")
     print(f"{'='*60}")
@@ -89,9 +76,8 @@ def benchmark_matchup(agent1, agent2, name1: str, name2: str, num_games: int = 5
 
 
 def main():
-    """Run comprehensive benchmark."""
     print("="*60)
-    print("VALUE NETWORK MCTS BENCHMARK")
+    print("Value Network MCTS Benchmark")
     print("="*60)
     print()
     print("This benchmark compares:")
@@ -103,7 +89,6 @@ def main():
     num_games = 50
     simulations = 100
     
-    # Create agents
     print("Creating agents...")
     greedy = GreedyAgent()
     mcts_random = MCTSAgent(simulations_per_move=simulations, player_id=1)
@@ -126,7 +111,7 @@ def main():
         has_trained_network = False
     
     print("\n" + "="*60)
-    print("BASELINE: MCTS (Random Rollouts) vs Greedy")
+    print("Baseline: MCTS (Random Rollouts) vs Greedy")
     print("="*60)
     
     results_random = benchmark_matchup(
@@ -136,7 +121,7 @@ def main():
     )
     
     print("\n" + "="*60)
-    print("ENHANCED: MCTS (Value Network) vs Greedy")
+    print("Enhanced: MCTS (Value Network) vs Greedy")
     print("="*60)
     
     results_valuenet = benchmark_matchup(
@@ -146,10 +131,9 @@ def main():
     )
     
     print("\n" + "="*60)
-    print("HEAD-TO-HEAD: Value Network MCTS vs Random Rollout MCTS")
+    print("Head-to-Head: Value Network MCTS vs Random Rollout MCTS")
     print("="*60)
     
-    # Switch player IDs for fair comparison
     mcts_random_p2 = MCTSAgent(simulations_per_move=simulations, player_id=2)
     results_head2head = benchmark_matchup(
         mcts_valuenet, mcts_random_p2,
@@ -157,9 +141,8 @@ def main():
         num_games=num_games
     )
     
-    # Summary
     print("\n" + "="*60)
-    print("SUMMARY")
+    print("Summary")
     print("="*60)
     
     win_rate_random = results_random[0] / num_games * 100
@@ -185,14 +168,6 @@ def main():
         print("Train it first for better results:")
         print("  python3 train_value_network.py")
         print("="*60)
-    
-    print("\n" + "="*60)
-    print("CONCLUSION")
-    print("="*60)
-    print("Value network MCTS eliminates expensive rollouts,")
-    print("providing faster and more accurate position evaluation.")
-    print("This is the key technique used in AlphaGo and AlphaZero!")
-    print("="*60)
 
 
 if __name__ == "__main__":

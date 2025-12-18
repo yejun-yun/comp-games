@@ -1,17 +1,9 @@
-"""
-General MCTS for Pokemon Battle V2
-
-This is the HONEST version that doesn't assume opponent behavior.
-Explores all joint actions fairly.
-"""
-
 import math
 import random
 from typing import Dict, Tuple, Optional, List
 from battle_v2 import BattleState, ActionType, step, legal_actions_for_player, calculate_damage
 
 def greedy_action(state: BattleState, player_id: int) -> ActionType:
-    """Choose greedy action for rollouts (max expected damage)."""
     legal = legal_actions_for_player(state, player_id)
     attacks = [a for a in legal if a in (ActionType.USE_MOVE_1, ActionType.USE_MOVE_2)]
     
@@ -31,10 +23,9 @@ def greedy_action(state: BattleState, player_id: int) -> ActionType:
         move = my_active.spec.moves[move_idx]
         base_dmg = calculate_damage(move, my_active, opp_active)
         
-        # Expected value accounting for accuracy and recoil
         expected = base_dmg * (move.accuracy / 100)
         if move.recoil_percent > 0:
-            expected -= base_dmg * (move.recoil_percent / 100) * 0.5  # Recoil penalty
+            expected -= base_dmg * (move.recoil_percent / 100) * 0.5
         
         if expected > max_expected:
             max_expected = expected
@@ -44,7 +35,6 @@ def greedy_action(state: BattleState, player_id: int) -> ActionType:
 
 
 class MCTSNode:
-    """MCTS node that explores ALL joint actions (no opponent assumptions)."""
     
     def __init__(self, state: BattleState, parent: Optional['MCTSNode'] = None,
                  my_player: int = 1):
@@ -52,7 +42,6 @@ class MCTSNode:
         self.parent = parent
         self.my_player = my_player
         
-        # Children indexed by JOINT actions (both players)
         self.children: Dict[Tuple[ActionType, ActionType], 'MCTSNode'] = {}
         
         self.visits = 0
@@ -93,7 +82,6 @@ class MCTSNode:
         return best_child
     
     def expand(self, joint_action: Tuple[ActionType, ActionType]) -> 'MCTSNode':
-        """Expand with joint action (fair version - no assumptions)."""
         new_state = step(self.state, joint_action[0], joint_action[1])
         child = MCTSNode(new_state, parent=self, my_player=self.my_player)
         self.children[joint_action] = child
@@ -101,28 +89,13 @@ class MCTSNode:
 
 
 class MCTSAgent:
-    """
-    General MCTS Agent - NO opponent modeling.
-    
-    This is the fair/honest version that doesn't assume opponent behavior.
-    """
-    
     def __init__(self, simulations_per_move: int = 1000, player_id: int = 1):
         self.simulations_per_move = simulations_per_move
         self.player_id = player_id
     
     def choose_action(self, state: BattleState, player_id: int) -> ActionType:
-        """
-        Choose best action using MINIMAX-style selection.
-        
-        For each of our actions, assume opponent plays their best response.
-        Pick the action with the best worst-case outcome.
-        
-        This fixes the bug where naive averaging gets worse with more simulations!
-        """
         root = MCTSNode(state, my_player=player_id)
         
-        # Run simulations
         for _ in range(self.simulations_per_move):
             self._simulate(root)
         
@@ -133,15 +106,11 @@ class MCTSAgent:
         best_action = None
         best_worst_case = -float('inf')
         
-        # For each of MY actions, find the worst-case outcome
-        # (i.e., opponent's best response)
         for my_action in legal_actions:
             worst_case_value = float('inf')
             total_visits = 0
             
-            # Check all opponent responses
             for opp_action in legal_opp:
-                # Construct joint action
                 if player_id == 1:
                     joint = (my_action, opp_action)
                 else:
@@ -150,24 +119,19 @@ class MCTSAgent:
                 if joint in root.children:
                     child = root.children[joint]
                     if child.visits > 0:
-                        # Calculate win rate from my perspective
                         if player_id == 1:
                             win_rate = child.wins / child.visits
                         else:
                             win_rate = (child.visits - child.wins) / child.visits
                         
-                        # Track worst case (best for opponent)
                         worst_case_value = min(worst_case_value, win_rate)
                         total_visits += child.visits
             
-            # If we explored this action at all, consider it
             if total_visits > 0 and worst_case_value < float('inf'):
-                # Pick action with best worst-case outcome
                 if worst_case_value > best_worst_case:
                     best_worst_case = worst_case_value
                     best_action = my_action
         
-        # Fallback: pick most-visited action
         if best_action is None:
             action_visits = {}
             for my_action in legal_actions:
@@ -182,22 +146,17 @@ class MCTSAgent:
         return best_action
     
     def _simulate(self, node: MCTSNode) -> float:
-        """Run one MCTS simulation."""
-        # Selection
         current = node
         while not current.state.terminal and current.is_fully_expanded():
             current = current.best_child()
         
-        # Expansion
         if not current.state.terminal:
             untried = current.get_untried_action()
             if untried:
                 current = current.expand(untried)
         
-        # Rollout
         result = self._rollout(current.state)
         
-        # Backpropagation
         while current is not None:
             current.visits += 1
             if result == 1:
@@ -209,7 +168,6 @@ class MCTSAgent:
         return result
     
     def _rollout(self, state: BattleState) -> float:
-        """Rollout with random play for both players (unbiased)."""
         current = state.clone()
         
         while not current.terminal:

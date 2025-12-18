@@ -1,9 +1,3 @@
-"""
-Benchmark script for V2 engine.
-
-Tests MCTS (no opponent modeling) vs Greedy baseline.
-"""
-
 import time
 import random
 from battle_v2 import BattleState, PlayerState, PokemonInstance, step
@@ -21,7 +15,6 @@ def create_teams():
     return t1, t2
 
 def run_single_game(agent1: Agent, agent2: Agent) -> int:
-    """Run one game, return winner (1, 2, or 0 for draw)."""
     t1, t2 = create_teams()
     state = BattleState(
         player1=PlayerState(team=t1, active_index=0),
@@ -41,7 +34,6 @@ def run_single_game(agent1: Agent, agent2: Agent) -> int:
     return state.winner if state.terminal else 0
 
 def run_benchmark(agent1, agent2, num_games, name1, name2):
-    """Run benchmark between two agents."""
     print(f"\n{'='*60}")
     print(f"{name1} vs {name2} ({num_games} games)")
     print(f"{'='*60}")
@@ -81,13 +73,11 @@ def main():
     
     num_games = 50
     
-    # Baseline: Greedy vs Random
-    print("\n### BASELINE: Greedy vs Random ###")
+    print("\n### Baseline: Greedy vs Random ###")
     greedy = GreedyAgent()
     random_agent = RandomAgent()
     run_benchmark(greedy, random_agent, num_games, "Greedy", "Random")
     
-    # Test MCTS at different simulation budgets
     budgets = [50, 100, 200, 500]
     results = []
     
@@ -98,9 +88,8 @@ def main():
         result = run_benchmark(mcts, greedy, num_games, f"MCTS-{sims}", "Greedy")
         results.append((sims, result["p1"]))
     
-    # Summary
     print("\n" + "="*60)
-    print("SUMMARY: MCTS Performance Scaling")
+    print("Summary: MCTS Performance Scaling")
     print("="*60)
     print(f"\n{'Simulations':<15} {'Win Rate':<15}")
     print("-" * 30)
@@ -109,9 +98,9 @@ def main():
         print(f"{sims:<15} {wr:<14.1f}%")
     
     print("\n" + "="*60)
-    print("CONCLUSION:")
+    print("Conclusion:")
     print("="*60)
-    print("This is HONEST MCTS - no opponent modeling.")
+    print("This is Honest MCTS - no opponent modeling.")
     print("Performance improvement comes from pure search depth.")
     print("="*60 + "\n")
 
